@@ -9,3 +9,9 @@
     ,CONSTRAINT FK_partisipants_ping_result FOREIGN KEY (ping_result_id) REFERENCES refs.ping_results (id)
 );
 GO
+
+CREATE INDEX IX_Participants_Operation_id ON [oprs].[participants] ([operation_id]);
+GO
+
+CREATE INDEX IX_Participants_Agent_id ON [oprs].[participants] ([agent_id]);
+GO

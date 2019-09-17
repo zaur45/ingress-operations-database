@@ -7,3 +7,6 @@
     ,CONSTRAINT PK_Operations PRIMARY KEY CLUSTERED (id)
 );
 GO
+
+CREATE INDEX IX_Operations_Start_date ON [oprs].[operations] ([start_date] ASC);
+GO
