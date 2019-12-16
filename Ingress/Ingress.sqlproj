@@ -25,6 +25,8 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Cyrillic_General_CI_AI</DefaultCollation>
     <DacVersion>0.1.0.0</DacVersion>
+    <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
+    <GenerateCreateScript>True</GenerateCreateScript>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -38,7 +40,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
@@ -56,6 +57,19 @@
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Stage|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+  </PropertyGroup>
   <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
@@ -65,6 +79,8 @@
     <Folder Include="src\Schemas" />
     <Folder Include="src\Sequences" />
     <Folder Include="src\Post-deploy_scripts" />
+    <Folder Include="src\Functions" />
+    <Folder Include="src\StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="src\Tables\refs.agents.sql" />
@@ -78,8 +94,48 @@
     <Build Include="src\Tables\refs.roles.sql" />
     <Build Include="src\Sequences\operations_sequence.sql" />
     <Build Include="src\Sequences\participants_sequence.sql" />
+    <Build Include="src\Tables\oprs.draw_schemes.sql" />
+    <Build Include="src\Tables\oprs.fields.sql" />
+    <Build Include="src\Tables\oprs.links.sql" />
+    <Build Include="src\Tables\oprs.team_participants.sql" />
+    <Build Include="src\Tables\oprs.teams.sql" />
+    <Build Include="src\Tables\refs.agents_contacts.sql" />
+    <Build Include="src\Tables\refs.contact_types.sql" />
+    <Build Include="src\Tables\refs.portals.sql" />
+    <Build Include="src\Sequences\agents_contacts_sequence.sql" />
+    <Build Include="src\Sequences\draw_schemes_sequence.sql" />
+    <Build Include="src\Sequences\fields_sequence.sql" />
+    <Build Include="src\Sequences\links_sequence.sql" />
+    <Build Include="src\Sequences\portals_sequence.sql" />
+    <Build Include="src\Sequences\team_paricipants_sequence.sql" />
+    <Build Include="src\Sequences\teams_sequence.sql" />
+    <Build Include="src\Functions\dbo.get_portal_google_ref.sql" />
+    <Build Include="src\Functions\dbo.get_portal_intel_ref.sql" />
+    <Build Include="src\StoredProcedures\refs.create_portals_form_dt.sql" />
+    <Build Include="src\StoredProcedures\refs.create_portal.sql" />
+    <Build Include="src\Tables\oprs.link_order.sql" />
+    <Build Include="src\Schemas\usrs.sql" />
+    <Build Include="src\StoredProcedures\usrs.add_agent_to_operation.sql" />
+    <Build Include="src\Schemas\rprt.sql" />
+    <Build Include="src\StoredProcedures\rprt.operation_participants.sql" />
+    <Build Include="src\StoredProcedures\usrs.add_dt_from_json.sql" />
+    <Build Include="src\StoredProcedures\oprs.parse_dt.sql" />
+    <Build Include="src\StoredProcedures\oprs.create_links_from_dt.sql" />
+    <Build Include="src\StoredProcedures\rprt.portals_for_renaming.sql" />
+    <Build Include="src\StoredProcedures\refs.rename_portal.sql" />
+    <Build Include="src\StoredProcedures\usrs.swap_link_direction.sql" />
+    <Build Include="src\StoredProcedures\oprs.fill_link_list.sql" />
+    <Build Include="src\StoredProcedures\rprt.get_link_table.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="src\Post-deploy_scripts\Script.PostDeploymentFixtures.sql" />
+    <None Include="src\Post-deploy_scripts\script.load_refs_fixtures.sql" />
+    <PostDeploy Include="src\Post-deploy_scripts\script._post_deployment.sql" />
+    <None Include="Ingress-stage.publish.xml" />
+    <None Include="src\Post-deploy_scripts\script.test_003_load_test_dt.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Post-deploy_scripts\script.test_001.sql" />
+    <None Include="Ingress.stage.xml" />
+    <None Include="src\Post-deploy_scripts\script.test_002_add_portals_list.sql" />
   </ItemGroup>
 </Project>

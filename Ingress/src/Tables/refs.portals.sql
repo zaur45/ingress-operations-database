@@ -4,7 +4,7 @@ CREATE TABLE [refs].[portals]
     ,[name]     nvarchar(255)   NULL
     ,[lat]      decimal(18,15)  NULL
     ,[lon]      decimal(18,15)  NULL
-    ,[coords]   AS geography::STPointFromText('POINT(' + cast(lat as varchar) + ' ' + cast(lon as varchar) + ')',4326)
+    ,[coords]   AS geography::Point(lat, lon, 4326)
 
     ,CONSTRAINT [PK_portals] PRIMARY KEY CLUSTERED ([id] ASC)
 );
